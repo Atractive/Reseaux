@@ -19,6 +19,8 @@ public class ServeurTCP {
 		PrintWriter out;
 		String msg;
 		
+		
+		
 		final Scanner sc = new Scanner(System.in);
 		
 		// Création du Serveur
