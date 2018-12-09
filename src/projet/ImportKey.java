@@ -3,7 +3,11 @@ package projet;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.security.Key;
+import java.util.Base64;
 import java.util.Scanner;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class ImportKey {
 	
@@ -20,8 +24,10 @@ public class ImportKey {
 		
 	}
 	
-	public String getKey(){
-		return this.key;
+	public SecretKey getKey(){
+		byte[] decodedKey = Base64.getDecoder().decode(this.key);
+		SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+		return originalKey;
 	}
 
 	public static void main(String[] args) {
