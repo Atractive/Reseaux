@@ -25,7 +25,8 @@ public class ClientTCP {
 		
 		BufferedReader in;
 		PrintWriter out;
-		String msg;
+		String msgr;
+		String msgc;
 		
 		SecretKey key;
 		ImportKey ik;
@@ -35,14 +36,12 @@ public class ClientTCP {
 		byte[] result;
 		byte[] original;
 		
-		
-		
 		final Scanner sc = new Scanner(System.in);
 		
 		try {
 			
-			System.out.println("Entrez l'adresse IP du serveur");
-            client = new Socket(sc.next(), 4444);
+			System.out.println("Entrez l'adresse IP du serveur :");
+            client = new Socket(sc.nextLine(), 4444);
             
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
@@ -51,19 +50,20 @@ public class ClientTCP {
             key = ik.getKey();
             cipher = Cipher.getInstance("AES");
 
-            System.out.println("Connexion établie... Vous pouvez entrer votre message");
+            System.out.println("Connexion établie... Vous pouvez entrer votre message :");
             while (true) {
                 
             	cipher.init(Cipher.ENCRYPT_MODE,key);
-            	data = sc.next().getBytes();
+            	data = sc.nextLine().getBytes();
             	result = cipher.doFinal(data);
                 out.println(DatatypeConverter.printBase64Binary(result));
                 out.flush();
 
                 cipher.init(Cipher.DECRYPT_MODE,key);
-            	original = DatatypeConverter.parseBase64Binary(in.readLine());
-                msg = new String(cipher.doFinal(original));
-                System.out.println("Serveur : " + original + " -> " + msg);
+                msgr = in.readLine();
+            	original = DatatypeConverter.parseBase64Binary(msgr);
+                msgc = new String(cipher.doFinal(original));
+                System.out.println("Serveur : " + msgr + " -> " + msgc);
               
             }
 			

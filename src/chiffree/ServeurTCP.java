@@ -30,7 +30,8 @@ public class ServeurTCP {
 		
 		BufferedReader in;
 		PrintWriter out;
-		String msg;
+		String msgr;
+		String msgc;
 		
 		SecretKey key;
 		ImportKey ik;
@@ -63,16 +64,17 @@ public class ServeurTCP {
             while (true) {
             	
             	cipher.init(Cipher.DECRYPT_MODE,key);
-            	original = DatatypeConverter.parseBase64Binary(in.readLine());
-                msg = new String(cipher.doFinal(original));
-                System.out.println("Client : " + original + " -> " + msg);
+            	msgr = in.readLine();
+            	original = DatatypeConverter.parseBase64Binary(msgr);
+                msgc = new String(cipher.doFinal(original));
+                System.out.println("Client : " + msgr + " -> " + msgc);
                 
-                if (msg.equals("bye")) {
+                if (msgc.equals("bye")) {
                     break;
                 }
                 
                 cipher.init(Cipher.ENCRYPT_MODE,key);
-            	data = sc.next().getBytes();
+            	data = sc.nextLine().getBytes();
             	result = cipher.doFinal(data);
                 out.println(DatatypeConverter.printBase64Binary(result));
                 out.flush();
