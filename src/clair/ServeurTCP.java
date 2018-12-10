@@ -44,7 +44,7 @@ public class ServeurTCP {
                     break;
                 }
 
-                out.println(sc.next());
+                out.println(sc.nextLine());
                 out.flush();
                    
             }

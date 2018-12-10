@@ -46,6 +46,7 @@ public class ClientTCP {
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
             
+            // Recuperation de la cle et creation du cipher
             ik = new ImportKey();
             key = ik.getKey();
             cipher = Cipher.getInstance("AES");
@@ -53,12 +54,14 @@ public class ClientTCP {
             System.out.println("Connexion établie... Vous pouvez entrer votre message :");
             while (true) {
                 
+            	// Encryptage du message et envoie
             	cipher.init(Cipher.ENCRYPT_MODE,key);
             	data = sc.nextLine().getBytes();
             	result = cipher.doFinal(data);
                 out.println(DatatypeConverter.printBase64Binary(result));
                 out.flush();
-
+                
+                // Decryptage du message et affichage dans la console
                 cipher.init(Cipher.DECRYPT_MODE,key);
                 msgr = in.readLine();
             	original = DatatypeConverter.parseBase64Binary(msgr);

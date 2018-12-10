@@ -23,7 +23,7 @@ public class ClientTCP {
         try {
 
             System.out.println("Entrez l'adresse IP du serveur :");
-            client = new Socket(sc.next(), 4444);
+            client = new Socket(sc.nextLine(), 4444);
             
             in = new BufferedReader(new InputStreamReader(client.getInputStream()));
             out = new PrintWriter(client.getOutputStream(), true);
@@ -31,7 +31,7 @@ public class ClientTCP {
             System.out.println("Connexion établie... Vous pouvez entrer votre message :");
             while (true) {
                 
-                out.println(sc.next());
+                out.println(sc.nextLine());
                 out.flush();
 
                 msg = in.readLine();

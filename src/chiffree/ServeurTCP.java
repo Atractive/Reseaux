@@ -57,22 +57,26 @@ public class ServeurTCP {
 			in = new BufferedReader(new InputStreamReader(client.getInputStream()));
 			out = new PrintWriter(client.getOutputStream());
 			
+			// Recuperation de la cle et creation du cipher
 			ik = new ImportKey();
 			key = ik.getKey();
 			cipher = Cipher.getInstance("AES");
 
             while (true) {
             	
+            	// Decryptage du message et affichage dans la console
             	cipher.init(Cipher.DECRYPT_MODE,key);
             	msgr = in.readLine();
             	original = DatatypeConverter.parseBase64Binary(msgr);
                 msgc = new String(cipher.doFinal(original));
                 System.out.println("Client : " + msgr + " -> " + msgc);
                 
+                // Si le message recu est "bye", on sort de la boucle
                 if (msgc.equals("bye")) {
                     break;
                 }
                 
+                // Encryptage du message et envoie
                 cipher.init(Cipher.ENCRYPT_MODE,key);
             	data = sc.nextLine().getBytes();
             	result = cipher.doFinal(data);

@@ -17,6 +17,7 @@ public class ImportKey {
 	public ImportKey() {
 		
 		try {
+			//On recupere la cle dans le fichier
 			Scanner scan = new Scanner(new File("mykey.txt"));
 			key = scan.next();
 		} catch (FileNotFoundException e) {
@@ -25,6 +26,7 @@ public class ImportKey {
 		
 	}
 	
+	// Methode permettant de recuperer la cle dans le bon format
 	public SecretKey getKey() throws UnsupportedEncodingException{
 		return new SecretKeySpec(this.key.getBytes("ISO-8859-2"),"AES");
 	}
