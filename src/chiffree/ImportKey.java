@@ -1,7 +1,8 @@
-package projet;
+package chiffree;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.security.Key;
 import java.util.Base64;
 import java.util.Scanner;
@@ -24,13 +25,11 @@ public class ImportKey {
 		
 	}
 	
-	public SecretKey getKey(){
-		byte[] decodedKey = Base64.getDecoder().decode(this.key);
-		SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
-		return originalKey;
+	public SecretKey getKey() throws UnsupportedEncodingException{
+		return new SecretKeySpec(this.key.getBytes("ISO-8859-2"),"AES");
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws UnsupportedEncodingException {
 		ImportKey ik = new ImportKey();
 		System.out.println(ik.getKey());
 	}

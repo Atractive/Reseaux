@@ -1,4 +1,4 @@
-package projet;
+package chiffree;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,6 +19,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
+import javax.xml.bind.DatatypeConverter;
 
 public class ServeurTCP {
 	
@@ -30,11 +31,14 @@ public class ServeurTCP {
 		BufferedReader in;
 		PrintWriter out;
 		String msg;
-		byte[] data;
 		
 		SecretKey key;
 		ImportKey ik;
 		Cipher cipher;
+		
+		byte[] data;
+		byte[] result;
+		byte[] original;
 		
 		final Scanner sc = new Scanner(System.in);
 		
@@ -55,21 +59,25 @@ public class ServeurTCP {
 			ik = new ImportKey();
 			key = ik.getKey();
 			cipher = Cipher.getInstance("AES");
-			
-			while(true){
-				
-				cipher.init(Cipher.DECRYPT_MODE,key);
-				data = in.readLine().getBytes("UTF-8");
-				msg = new String (cipher.doFinal(data));
-				
-				System.out.println("Client : " + data + " -> " + msg);
-				if (msg.equals("bye")){
-					break;
-				}
-				
-				out.println(sc.next());
-				
-			}
+
+            while (true) {
+            	
+            	cipher.init(Cipher.DECRYPT_MODE,key);
+            	original = DatatypeConverter.parseBase64Binary(in.readLine());
+                msg = new String(cipher.doFinal(original));
+                System.out.println("Client : " + original + " -> " + msg);
+                
+                if (msg.equals("bye")) {
+                    break;
+                }
+                
+                cipher.init(Cipher.ENCRYPT_MODE,key);
+            	data = sc.next().getBytes();
+            	result = cipher.doFinal(data);
+                out.println(DatatypeConverter.printBase64Binary(result));
+                out.flush();
+                   
+            }
 			
 		} catch (IOException ex) {
 			System.err.println("Le port " + port + " est inaccessible");
@@ -77,11 +85,11 @@ public class ServeurTCP {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
 			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		}
 

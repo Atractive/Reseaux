@@ -1,4 +1,4 @@
-package projet;
+package chiffree;
 
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;

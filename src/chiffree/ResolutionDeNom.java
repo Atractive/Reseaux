@@ -1,4 +1,4 @@
-package projet;
+package chiffree;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

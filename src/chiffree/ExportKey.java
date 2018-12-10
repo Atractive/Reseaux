@@ -1,4 +1,4 @@
-package projet;
+package chiffree;
 
 import java.io.PrintWriter;
 import java.security.Key;
